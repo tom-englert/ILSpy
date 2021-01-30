@@ -43,7 +43,7 @@ namespace ICSharpCode.ILSpy.Analyzers
 
 		public ITypeDefinition TypeScope => typeScope;
 
-		Accessibility effectiveAccessibility;
+		ICSharpCode.Decompiler.TypeSystem.Accessibility effectiveAccessibility;
 
 		public AnalyzerScope(AssemblyList assemblyList, IEntity entity)
 		{
@@ -59,7 +59,7 @@ namespace ICSharpCode.ILSpy.Analyzers
 				typeScope = entity.DeclaringTypeDefinition;
 				effectiveAccessibility = DetermineEffectiveAccessibility(ref typeScope, entity.Accessibility);
 			}
-			IsLocal = effectiveAccessibility.LessThanOrEqual(Accessibility.Private);
+			IsLocal = effectiveAccessibility.LessThanOrEqual(ICSharpCode.Decompiler.TypeSystem.Accessibility.Private);
 		}
 
 		public IEnumerable<PEFile> GetModulesInScope(CancellationToken ct)
@@ -67,7 +67,7 @@ namespace ICSharpCode.ILSpy.Analyzers
 			if (IsLocal)
 				return new[] { TypeScope.ParentModule.PEFile };
 
-			if (effectiveAccessibility.LessThanOrEqual(Accessibility.Internal))
+			if (effectiveAccessibility.LessThanOrEqual(ICSharpCode.Decompiler.TypeSystem.Accessibility.Internal))
 				return GetModuleAndAnyFriends(TypeScope, ct);
 
 			return GetReferencingModules(TypeScope.ParentModule.PEFile, ct);
@@ -106,10 +106,10 @@ namespace ICSharpCode.ILSpy.Analyzers
 			}
 		}
 
-		static Accessibility DetermineEffectiveAccessibility(ref ITypeDefinition typeScope, Accessibility memberAccessibility = Accessibility.Public)
+		static ICSharpCode.Decompiler.TypeSystem.Accessibility DetermineEffectiveAccessibility(ref ITypeDefinition typeScope, ICSharpCode.Decompiler.TypeSystem.Accessibility memberAccessibility = ICSharpCode.Decompiler.TypeSystem.Accessibility.Public)
 		{
-			Accessibility accessibility = memberAccessibility;
-			while (typeScope.DeclaringTypeDefinition != null && !accessibility.LessThanOrEqual(Accessibility.Private))
+			ICSharpCode.Decompiler.TypeSystem.Accessibility accessibility = memberAccessibility;
+			while (typeScope.DeclaringTypeDefinition != null && !accessibility.LessThanOrEqual(ICSharpCode.Decompiler.TypeSystem.Accessibility.Private))
 			{
 				accessibility = accessibility.Intersect(typeScope.Accessibility);
 				typeScope = typeScope.DeclaringTypeDefinition;

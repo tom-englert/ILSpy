@@ -94,6 +94,7 @@ namespace ICSharpCode.ILSpy
 				var discovery = new AttributedPartDiscoveryV1(Resolver.DefaultInstance);
 				var catalog = ComposableCatalog.Create(Resolver.DefaultInstance);
 				var pluginDir = Path.GetDirectoryName(typeof(App).Module.FullyQualifiedName);
+#if NET472
 				if (pluginDir != null)
 				{
 					foreach (var plugin in Directory.GetFiles(pluginDir, "*.Plugin.dll"))
@@ -111,6 +112,7 @@ namespace ICSharpCode.ILSpy
 						}
 					}
 				}
+#endif
 				// Add the built-in parts
 				var createdParts = await discovery.CreatePartsAsync(Assembly.GetExecutingAssembly());
 				catalog = catalog.AddParts(createdParts);
@@ -165,7 +167,7 @@ namespace ICSharpCode.ILSpy
 			e.SetObserved();
 		}
 
-		#region Exception Handling
+#region Exception Handling
 		static void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 		{
 			UnhandledException(e.Exception);
@@ -213,9 +215,9 @@ namespace ICSharpCode.ILSpy
 				showingError = false;
 			}
 		}
-		#endregion
+#endregion
 
-		#region Pass Command Line Arguments to previous instance
+#region Pass Command Line Arguments to previous instance
 		bool SendToPreviousInstance(string message, bool activate)
 		{
 			string ownProcessName;
@@ -274,7 +276,7 @@ namespace ICSharpCode.ILSpy
 				}
 			}
 		}
-		#endregion
+#endregion
 
 		void Window_RequestNavigate(object sender, RequestNavigateEventArgs e)
 		{

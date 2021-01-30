@@ -678,12 +678,13 @@ namespace ICSharpCode.ILSpy
 
 		public async Task ShowMessageIfUpdatesAvailableAsync(ILSpySettings spySettings, bool forceCheck = false)
 		{
+#if NET472
 			// Don't check for updates if we're in an MSIX since they work differently
 			if (WindowsVersionHelper.HasPackageIdentity)
 			{
 				return;
 			}
-
+#endif
 			string downloadUrl;
 			if (forceCheck)
 			{
@@ -731,7 +732,7 @@ namespace ICSharpCode.ILSpy
 				downloadOrCheckUpdateButton.Content = Properties.Resources.CheckAgain;
 			}
 		}
-		#endregion
+#endregion
 
 		public void ShowAssemblyList(string name)
 		{
@@ -828,7 +829,7 @@ namespace ICSharpCode.ILSpy
 			get { return assemblyListTreeNode; }
 		}
 
-		#region Node Selection
+#region Node Selection
 
 		public void SelectNode(SharpTreeNode obj)
 		{
@@ -1075,9 +1076,9 @@ namespace ICSharpCode.ILSpy
 				// just ignore all of them.
 			}
 		}
-		#endregion
+#endregion
 
-		#region Open/Refresh
+#region Open/Refresh
 		void OpenCommandExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			e.Handled = true;
@@ -1154,9 +1155,9 @@ namespace ICSharpCode.ILSpy
 		{
 			DockWorkspace.Instance.ShowToolPane(SearchPaneModel.PaneContentId);
 		}
-		#endregion
+#endregion
 
-		#region Decompile (TreeView_SelectionChanged)
+#region Decompile (TreeView_SelectionChanged)
 		void TreeView_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			DecompileSelectedNodes();
@@ -1233,9 +1234,9 @@ namespace ICSharpCode.ILSpy
 				return AssemblyTreeView.GetTopLevelSelection().OfType<ILSpyTreeNode>();
 			}
 		}
-		#endregion
+#endregion
 
-		#region Back/Forward navigation
+#region Back/Forward navigation
 		void BackCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true;
@@ -1284,7 +1285,7 @@ namespace ICSharpCode.ILSpy
 			ignoreDecompilationRequests = false;
 			DecompileSelectedNodes(newState.ViewState as DecompilerTextViewState, false);
 		}
-		#endregion
+#endregion
 
 		internal void NavigateTo(RequestNavigateEventArgs e, bool recordHistory = true, bool inNewTabPage = false)
 		{

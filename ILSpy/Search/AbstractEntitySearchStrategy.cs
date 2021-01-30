@@ -31,9 +31,9 @@ namespace ICSharpCode.ILSpy.Search
 			{
 				if (apiVisibility == ApiVisibility.PublicOnly)
 				{
-					if (!(entity.Accessibility == Accessibility.Public ||
-						entity.Accessibility == Accessibility.Protected ||
-						entity.Accessibility == Accessibility.ProtectedOrInternal))
+					if (!(entity.Accessibility == ICSharpCode.Decompiler.TypeSystem.Accessibility.Public ||
+						entity.Accessibility == ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected ||
+						entity.Accessibility == ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal))
 						return false;
 				}
 				else if (apiVisibility == ApiVisibility.PublicAndInternal)

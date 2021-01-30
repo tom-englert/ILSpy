@@ -48,9 +48,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			get {
 				switch (TypeDefinition.Accessibility)
 				{
-					case Accessibility.Public:
-					case Accessibility.Protected:
-					case Accessibility.ProtectedOrInternal:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
 						return true;
 					default:
 						return false;
@@ -154,16 +154,16 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		{
 			switch (type.Accessibility)
 			{
-				case Accessibility.Public:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
 					return AccessOverlayIcon.Public;
-				case Accessibility.Internal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Internal:
 					return AccessOverlayIcon.Internal;
-				case Accessibility.ProtectedAndInternal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedAndInternal:
 					return AccessOverlayIcon.PrivateProtected;
-				case Accessibility.Protected:
-				case Accessibility.ProtectedOrInternal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
 					return AccessOverlayIcon.Protected;
-				case Accessibility.Private:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Private:
 					return AccessOverlayIcon.Private;
 				default:
 					return AccessOverlayIcon.CompilerControlled;

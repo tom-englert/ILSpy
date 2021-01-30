@@ -85,9 +85,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			get {
 				switch (PropertyDefinition.Accessibility)
 				{
-					case Accessibility.Public:
-					case Accessibility.ProtectedOrInternal:
-					case Accessibility.Protected:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
 						return true;
 					default:
 						return false;

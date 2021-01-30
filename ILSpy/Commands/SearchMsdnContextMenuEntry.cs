@@ -78,9 +78,9 @@ namespace ICSharpCode.ILSpy
 				return false;
 			switch (entity.DeclaringTypeDefinition.Accessibility)
 			{
-				case Accessibility.Public:
-				case Accessibility.Protected:
-				case Accessibility.ProtectedOrInternal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
 					return true;
 				default:
 					return false;

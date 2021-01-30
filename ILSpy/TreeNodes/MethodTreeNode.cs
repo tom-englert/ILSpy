@@ -63,21 +63,21 @@ namespace ICSharpCode.ILSpy.TreeNodes
 				GetOverlayIcon(method.Accessibility), method.IsStatic);
 		}
 
-		internal static AccessOverlayIcon GetOverlayIcon(Accessibility accessibility)
+		internal static AccessOverlayIcon GetOverlayIcon(ICSharpCode.Decompiler.TypeSystem.Accessibility accessibility)
 		{
 			switch (accessibility)
 			{
-				case Accessibility.Public:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
 					return AccessOverlayIcon.Public;
-				case Accessibility.Internal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Internal:
 					return AccessOverlayIcon.Internal;
-				case Accessibility.ProtectedAndInternal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedAndInternal:
 					return AccessOverlayIcon.PrivateProtected;
-				case Accessibility.Protected:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
 					return AccessOverlayIcon.Protected;
-				case Accessibility.ProtectedOrInternal:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
 					return AccessOverlayIcon.ProtectedInternal;
-				case Accessibility.Private:
+				case ICSharpCode.Decompiler.TypeSystem.Accessibility.Private:
 					return AccessOverlayIcon.Private;
 				default:
 					return AccessOverlayIcon.CompilerControlled;
@@ -103,9 +103,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			get {
 				switch (MethodDefinition.Accessibility)
 				{
-					case Accessibility.Public:
-					case Accessibility.Protected:
-					case Accessibility.ProtectedOrInternal:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Public:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.Protected:
+					case ICSharpCode.Decompiler.TypeSystem.Accessibility.ProtectedOrInternal:
 						return true;
 					default:
 						return false;

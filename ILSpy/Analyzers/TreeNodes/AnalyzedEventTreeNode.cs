@@ -71,7 +71,7 @@ namespace ICSharpCode.ILSpy.Analyzers.TreeNodes
 			backingField = null;
 			foreach (var field in analyzedEvent.DeclaringTypeDefinition.GetFields(options: GetMemberOptions.IgnoreInheritedMembers))
 			{
-				if (field.Name == analyzedEvent.Name && field.Accessibility == Accessibility.Private)
+				if (field.Name == analyzedEvent.Name && field.Accessibility == ICSharpCode.Decompiler.TypeSystem.Accessibility.Private)
 				{
 					backingField = field;
 					return true;
