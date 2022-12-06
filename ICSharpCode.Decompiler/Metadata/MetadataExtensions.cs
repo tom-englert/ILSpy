@@ -185,6 +185,8 @@ namespace ICSharpCode.Decompiler.Metadata
 			}
 		}
 
+
+
 		public static string ToILNameString(this FullTypeName typeName, bool omitGenerics = false)
 		{
 			string name;

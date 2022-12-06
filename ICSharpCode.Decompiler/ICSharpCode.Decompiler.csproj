@@ -92,7 +92,9 @@
     <Compile Include="CSharp\CallBuilder.cs" />
     <Compile Include="CSharp\CSharpLanguageVersion.cs" />
     <Compile Include="DecompilationProgress.cs" />
+    <Compile Include="Disassembler\CSharpSignatureTypeProvider.cs" />
     <Compile Include="Disassembler\IEntityProcessor.cs" />
+    <Compile Include="Disassembler\MethodSignatureProvider.cs" />
     <Compile Include="Disassembler\SortByNameProcessor.cs" />
     <Compile Include="NRTAttributes.cs" />
     <Compile Include="PartialTypeInfo.cs" />
