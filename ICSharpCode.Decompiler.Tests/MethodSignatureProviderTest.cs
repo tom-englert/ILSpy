@@ -28,7 +28,7 @@ namespace ICSharpCode.Decompiler.Tests
 	[TestFixture, Parallelizable(ParallelScope.All)]
 	public class MethodSignatureProviderTest
 	{
-		[TestCase("ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", nameof(Method1), "uint", new[] { "string", "int", "double", "string[]", "int[,]", "ref ICSharpCode.Decompiler.Disassembler.MethodSignature", "ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", "System.Func<int, double>" })]
+		[TestCase("ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", nameof(Method1), "uint", new[] { "string", "int", "double", "string[]", "int[,]", "ref ICSharpCode.Decompiler.Disassembler.IMethodSignature", "ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", "System.Func<int, double>" })]
 		[TestCase("ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", "Method1`1", "object", new[] { "string", "int" })]
 		[TestCase("ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest", nameof(Method3), "void", new[] { "ref string", "ref string", "ref string" })]
 		[TestCase("ICSharpCode.Decompiler.Tests.MethodSignatureProviderTest.GenericClass`1", "Method1`1", "void", new[] { "TOuter", "TInner", "System.Func<TOuter, TInner>" })]
@@ -60,7 +60,7 @@ namespace ICSharpCode.Decompiler.Tests
 
 #pragma warning disable CA1822 // Mark members as static
 
-		private UInt32 Method1(string s, int i, double d, string[] arr, int[,] arr2, ref MethodSignature refStruct, MethodSignatureProviderTest type, Func<int, double> func)
+		private UInt32 Method1(string s, int i, double d, string[] arr, int[,] arr2, ref IMethodSignature refStruct, MethodSignatureProviderTest type, Func<int, double> func)
 		{
 			return default;
 		}
