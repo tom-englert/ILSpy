@@ -19,24 +19,13 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 
-using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace ICSharpCode.Decompiler.Disassembler
 {
 	public class CSharpSignatureTypeProvider : ISignatureTypeProvider<Action<ITextOutput>, MetadataGenericContext>
 	{
-		readonly PEFile module;
-		readonly MetadataReader metadata;
-
-		public CSharpSignatureTypeProvider(PEFile module)
-		{
-			this.module = module ?? throw new ArgumentNullException(nameof(module));
-			this.metadata = module.Metadata;
-		}
-
 		public Action<ITextOutput> GetArrayType(Action<ITextOutput> elementType, ArrayShape shape)
 		{
 			return output => {
@@ -90,23 +79,25 @@ namespace ICSharpCode.Decompiler.Disassembler
 
 		public Action<ITextOutput> GetGenericMethodParameter(MetadataGenericContext genericContext, int index)
 		{
-			return output => {
-				output.Write("!!");
-				WriteTypeParameter(genericContext.GetGenericMethodTypeParameterHandleOrNull(index), index, output);
-			};
+			return output => WriteTypeParameter(genericContext.Metadata, genericContext.GetGenericMethodTypeParameterHandleOrNull(index), index, output);
 		}
 
 		public Action<ITextOutput> GetGenericTypeParameter(MetadataGenericContext genericContext, int index)
 		{
-			return output => {
-				output.Write("!");
-				WriteTypeParameter(genericContext.GetGenericTypeParameterHandleOrNull(index), index, output);
-			};
+			return output => WriteTypeParameter(genericContext.Metadata, genericContext.GetGenericTypeParameterHandleOrNull(index), index, output);
 		}
 
-		void WriteTypeParameter(GenericParameterHandle paramRef, int index, ITextOutput output)
+		private static void WriteTypeParameter(MetadataReader metadata, GenericParameterHandle paramRef, int index, ITextOutput output)
 		{
-			output.Write(index.ToString());
+			if (paramRef.IsNil)
+			{
+				output.Write(index.ToString());
+			}
+			else
+			{
+				var param = metadata.GetGenericParameter(paramRef);
+				output.Write(param.Name.IsNil ? param.Index.ToString() : DisassemblerHelpers.Escape(metadata.GetString(param.Name)));
+			}
 		}
 
 		public Action<ITextOutput> GetModifiedType(Action<ITextOutput> modifier, Action<ITextOutput> unmodifiedType, bool isRequired)
@@ -128,7 +119,7 @@ namespace ICSharpCode.Decompiler.Disassembler
 		}
 
 		public Action<ITextOutput> GetPrimitiveType(PrimitiveTypeCode typeCode)
-		{ 
+		{
 			switch (typeCode)
 			{
 				case PrimitiveTypeCode.SByte:
@@ -182,37 +173,17 @@ namespace ICSharpCode.Decompiler.Disassembler
 
 		public Action<ITextOutput> GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
 		{
-			return output => {
-				var inner = new PlainTextOutput();
-				((EntityHandle)handle).WriteTo(module, inner, default);
-				output.Write(DropScopePrefix(inner.ToString()));
-			};
+			return output => output.Write(handle.GetFullTypeName(reader).ToILNameString());
 		}
 
 		public Action<ITextOutput> GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
 		{
-			return output => {
-				var inner = new PlainTextOutput();
-				((EntityHandle)handle).WriteTo(module, inner, default);
-				output.Write(DropScopePrefix(inner.ToString()));
-			};
+			return output => output.Write(handle.GetFullTypeName(reader).ToILNameString(true));
 		}
 
 		public Action<ITextOutput> GetTypeFromSpecification(MetadataReader reader, MetadataGenericContext genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
 		{
 			return reader.GetTypeSpecification(handle).DecodeSignature(this, genericContext);
-		}
-
-		private static string DropScopePrefix(string value)
-		{
-			if (string.IsNullOrEmpty(value) || value[0] != '[')
-				return value;
-
-			int index = value.IndexOf(']');
-			if (index < 1)
-				return value;
-
-			return value.Substring(index + 1);
 		}
 	}
 }
