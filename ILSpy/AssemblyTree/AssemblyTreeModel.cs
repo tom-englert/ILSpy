@@ -70,6 +70,8 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 		private readonly SettingsService settingsService;
 		private readonly LanguageService languageService;
 		private readonly IExportProvider exportProvider;
+		
+		private static Dispatcher UIThreadDispatcher => App.Current.Dispatcher;
 
 		private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
@@ -168,7 +170,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 		{
 			var cmdArgs = CommandLineArguments.Create(args);
 
-			await Dispatcher.InvokeAsync(async () => {
+			await UIThreadDispatcher.InvokeAsync(async () => {
 
 				if (!HandleCommandLineArguments(cmdArgs))
 					return;
@@ -226,7 +228,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 
 					// Make sure we wait for assemblies being loaded...
 					// BeginInvoke in LoadedAssembly.LookupReferencedAssemblyInternal
-					await Dispatcher.InvokeAsync(delegate { }, DispatcherPriority.Normal);
+					await UIThreadDispatcher.InvokeAsync(delegate { }, DispatcherPriority.Normal);
 
 					if (mr is { ParentModule.MetadataFile: not null })
 					{
@@ -371,7 +373,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 				AssemblyList.Open(sessionSettings.ActiveAutoLoadedAssembly, true);
 			}
 
-			Dispatcher.BeginInvoke(DispatcherPriority.Loaded, OpenAssemblies);
+			UIThreadDispatcher.BeginInvoke(DispatcherPriority.Loaded, OpenAssemblies);
 		}
 
 		private async Task OpenAssemblies()
@@ -488,7 +490,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 
 			if (SelectedItem == node)
 			{
-				Dispatcher.BeginInvoke(RefreshDecompiledView);
+				UIThreadDispatcher.BeginInvoke(RefreshDecompiledView);
 			}
 			else
 			{
@@ -496,7 +498,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 				activeView?.ScrollIntoView(node);
 				SelectedItem = node;
 
-				Dispatcher.BeginInvoke(DispatcherPriority.Background, () => {
+				UIThreadDispatcher.BeginInvoke(DispatcherPriority.Background, () => {
 					activeView?.ScrollIntoView(node);
 				});
 			}
@@ -748,7 +750,7 @@ namespace ICSharpCode.ILSpy.AssemblyTree
 			{
 				ContextMenuProvider.ContextMenuClosed -= ContextMenuClosed;
 
-				Dispatcher.BeginInvoke(DispatcherPriority.Background, () => {
+				UIThreadDispatcher.BeginInvoke(DispatcherPriority.Background, () => {
 					if (Mouse.RightButton != MouseButtonState.Pressed)
 					{
 						RefreshDecompiledView();

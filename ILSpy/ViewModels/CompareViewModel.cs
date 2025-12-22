@@ -45,7 +45,7 @@ namespace ICSharpCode.ILSpy.ViewModels
 
 	using TomsToolbox.Wpf;
 
-	class CompareViewModel : ObservableObject
+	class CompareViewModel : ObservableObjectBase
 	{
 		private readonly TabPageModel tabPage;
 		private readonly AssemblyTreeModel assemblyTreeModel;
